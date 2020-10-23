@@ -31,6 +31,7 @@ spec:
         metadata:
           type: object
         spec:
+          description: Spec comments SHOULD appear in the CRD spec
           properties:
             defaultedString:
               description: This tests that defaulted fields are stripped for v1beta1,
@@ -40,6 +41,7 @@ spec:
           - defaultedString
           type: object
         status:
+          description: Status comments SHOULD appear in the CRD spec
           type: object
       type: object
   version: foo

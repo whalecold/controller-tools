@@ -31,7 +31,7 @@ import (
 	"sigs.k8s.io/controller-tools/pkg/markers"
 )
 
-var _ = Describe("CRD Generation proper defaulting", func() {
+var _ = Describe("CRD Generation integration tests", func() {
 	var ctx *genall.GenerationContext
 	var out *outputRule
 	BeforeEach(func() {
@@ -90,6 +90,19 @@ var _ = Describe("CRD Generation proper defaulting", func() {
 		By("comparing the two")
 		Expect(out.buf.Bytes()).To(Equal(expectedFile))
 
+	})
+
+	It("should ignore godoc comments on ObjectMetadata and not create a description", func() {
+		By("calling Generate")
+		gen := &crd.Generator{}
+		Expect(gen.Generate(ctx)).NotTo(HaveOccurred())
+
+		By("loading the desired YAML")
+		expectedFile, err := ioutil.ReadFile("./testdata/gen/foo_crd_valid_metadata.yaml")
+		Expect(err).NotTo(HaveOccurred())
+
+		By("comparing the two")
+		Expect(out.buf.Bytes()).To(Equal(expectedFile))
 	})
 })
 

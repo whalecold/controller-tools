@@ -285,7 +285,7 @@ func FindKubeKinds(parser *Parser, metav1Pkg *loader.Package) map[schema.GroupKi
 		pkg.NeedTypesInfo()
 		typesInfo := pkg.TypesInfo
 
-		for _, field := range info.Fields {
+		for i, field := range info.Fields {
 			if field.Name != "" {
 				// type and object meta are embedded,
 				// so they can't be this
@@ -312,6 +312,11 @@ func FindKubeKinds(parser *Parser, metav1Pkg *loader.Package) map[schema.GroupKi
 			switch namedField.Obj().Name() {
 			case "ObjectMeta":
 				hasObjectMeta = true
+				// Clear the godoc comment from the ObjectMeta field
+				// so it does not show up as the description, because
+				// description is not allowed in metadata of CRD structural schema.
+				field.Doc = ""
+				info.Fields[i] = field
 			case "TypeMeta":
 				hasTypeMeta = true
 			}
