@@ -205,7 +205,6 @@ func removeDescriptionFromMetadataProps(v *apiext.JSONSchemaProps) {
 			}
 		}
 		if property.Items != nil {
-			fmt.Fprintf(os.Stderr, "item not nil, enter to process \n")
 			removeDescriptionFromMetadataProps(property.Items.Schema)
 			for i := range property.Items.JSONSchemas {
 				removeDescriptionFromMetadataProps(&property.Items.JSONSchemas[i])
